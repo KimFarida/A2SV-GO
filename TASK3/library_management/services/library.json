@@ -1,0 +1,36 @@
+{
+ "Books": {
+  "1": {
+   "ID": 1,
+   "Title": "Clockwork Prince",
+   "Author": "Cassandra Clare",
+   "Status": "borrowed"
+  },
+  "3": {
+   "ID": 3,
+   "Title": "Things Fall Apart",
+   "Author": "Chinua Achebe",
+   "Status": "available"
+  }
+ },
+ "Members": {
+  "1": {
+   "ID": 1,
+   "Name": "Farida",
+   "BorrowedBooks": [
+    {
+     "ID": 1,
+     "Title": "Clockwork Prince",
+     "Author": "Cassandra Clare",
+     "Status": "borrowed"
+    }
+   ]
+  },
+  "2": {
+   "ID": 2,
+   "Name": "Bella Hassan",
+   "BorrowedBooks": []
+  }
+ },
+ "Mu": {}
+}
