@@ -1,48 +1,48 @@
-📚 Library Management CLI (Go)
+# 📚 Library Management CLI (Go)
 
 A lightweight command-line application for managing a digital library system.
 
 You can create books or members, list available books, borrow and return books, and remove them --- all from the console.
 
-⚙️ Setup
+## ⚙️ Setup
 
-Build the app
+### Build the app
 
-go build main.go
+`go build main.go`
 
-Run the executable
+### Run the executable
 
-./main <command> [flags]
+`./main <command> [flags]`
+
 
 Data is persisted in a library.json file in the project root.
-
 It's automatically created if it doesn't exist.
 
-🧾 Commands Overview
+## 🧾 Commands Overview
 
 Command Description
 
-create Create a new book or member
+- create Create a new book or member
 
-available-books List all books currently available in the library
+- available-books List all books currently available in the library
 
-borrow Borrow a book for a specific member
+- borrow Borrow a book for a specific member
 
-borrowed-books Show all books borrowed by a member
+- borrowed-books Show all books borrowed by a member
 
-return Return a borrowed book
+- return Return a borrowed book
 
-remove Remove a book from the library
+- remove Remove a book from the library
 
 🪶 1. Create a Book
 
 Syntax:
 
-./main create -title="<Title>" -author="<Author>"
+`./main create -title="<Title>" -author="<Author>"`
 
 Example:
 
-./main create -title="Things Fall Apart" -author="Chinua Achebe"
+`./main create -title="Things Fall Apart" -author="Chinua Achebe"`
 
 ✅ Result:
 
@@ -52,11 +52,11 @@ A new book is added to the library with a unique ID and marked as available.
 
 Syntax:
 
-./main create -name="<Member Name>"
+`./main create -name="<Member Name>"`
 
 Example:
 
-./main create -name="Bella Hassan"
+`./main create -name="Bella Hassan"`
 
 ✅ Result:
 
@@ -66,7 +66,7 @@ A new member is added to the library's member list.
 
 Syntax:
 
-./main available-books
+`./main available-books`
 
 Example Output:
 
@@ -82,11 +82,11 @@ Displays all books whose status is "available".
 
 Syntax:
 
-./main borrow -bookID=<BookID> -memberID=<MemberID>
+`./main borrow -bookID=<BookID> -memberID=<MemberID>`
 
 Example:
 
-./main borrow -bookID=2 -memberID=2
+`./main borrow -bookID=2 -memberID=2`
 
 ✅ Result:
 
@@ -102,15 +102,15 @@ a member with the id does not exist
 
 Syntax:
 
-./main borrowed-books -memberID=<MemberID>
+`./main borrowed-books -memberID=<MemberID>`
 
 Example:
 
-./main borrowed-books -memberID=2
+`./main borrowed-books -memberID=2`
 
 Output:
 
-ID: 2, Title: Americana, Author: Chimamanda Adichie
+`ID: 2, Title: Americana, Author: Chimamanda Adichie`
 
 ✅ Result:
 
@@ -120,7 +120,7 @@ Lists all books currently borrowed by that member.
 
 Syntax:
 
-./main return -bookID=<BookID> -memberID=<MemberID>
+`./main return -bookID=<BookID> -memberID=<MemberID>`
 
 Example:
 
@@ -145,6 +145,8 @@ Example:
 ✅ Result:
 
 The specified book is permanently deleted from the library database.
+
+
 
 🧩 Example Workflow
 
