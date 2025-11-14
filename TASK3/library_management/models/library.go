@@ -10,6 +10,7 @@ import (
 type Library struct{
 	Books map[int]Book
 	Members map[int]Member
+	ReservedBooks map[int]int 
 	Mu sync.Mutex
 
 }
@@ -18,6 +19,7 @@ func NewLibrary()*Library{
 	return &Library{
 		Books: make(map[int]Book),
 		Members: make(map[int]Member),
+		ReservedBooks : make(map[int]int),
 	}
 }
 
@@ -131,8 +133,6 @@ func (lib *Library)ListAvailableBooks() []Book{
 }
 
 
-
-
 // ListBorrowed(memberID int) []Book
 func (lib *Library) ListBorrowed(memberID int) []Book{
 	member, ok := lib.Members[memberID]
@@ -144,3 +144,7 @@ func (lib *Library) ListBorrowed(memberID int) []Book{
 	return nil
 }
 
+// If the book is available, reserve it and process borrowing asynchronously.
+// If already reserved, return an error.
+// Once I reserve a book, I should start a time based go routine I guess
+// Once it returns to the channel, then i unreserve the book
