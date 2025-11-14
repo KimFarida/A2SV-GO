@@ -11,7 +11,7 @@ type Library struct{
 	Books map[int]Book
 	Members map[int]Member
 	ReservedBooks map[int]int 
-	Mu sync.Mutex
+	Mu sync.RWMutex
 
 }
 
@@ -68,6 +68,10 @@ func (lib *Library)BorrowBook(bookID, memberID int)error{
 
 	if !ok{
 		return  errors.New("a book with the id does not exist")
+	}
+
+	if _, ok := lib.ReservedBooks[book.ID]; ok{
+		return errors.New("this book has been reserved by a member")
 	}
 
 	if book.Status == BookBorrowed{
