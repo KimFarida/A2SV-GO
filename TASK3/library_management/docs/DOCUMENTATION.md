@@ -34,6 +34,8 @@ Command Description
 
 - `remove` Remove a book from the library
 
+- `reserve` Reserve book or stimulate concurrent book reservations
+
 ### 🪶 1. Create a Book
 
   #### Syntax:
@@ -147,6 +149,30 @@ Command Description
   #### ✅ Result:
   
   The specified book is permanently deleted from the library database.
+
+### 🟢 8. Reserve a Book or Simulate Concurrent Book Reservations
+
+  #### Syntax:
+  `./main reserve -bookID=<BookID> -memberID=<MemberID>`
+
+  #### Example:
+
+  ##### Reserve a book
+
+    `./main reserve -bookID=3 -memberID=2`
+
+  ✅ Result for Single Reservation:
+  - If the book is available, it is reserved for the member.
+  - If the book is already reserved, a message is displayed indicating that it has already been reserved.
+  - The reservation will automatically cancel after 5 seconds if not borrowed.
+
+  ##### Multiple Concurrent Reservations 
+    `./main reserve`
+
+  ✅ Result for Concurrent Reservation:
+  - 10 reservation requests will be simulated and processed concurrently by the worker.
+  - Each reservation will be checked, and books will be reserved if available. If not, a message will indicate that the book is already reserved.
+  - Each reservation is auto-cancelled after 5 seconds if not borrowed.
 
 
 
