@@ -12,6 +12,9 @@ import (
 // Now for my subcommands
 
 
+var ReservationChannel = make(chan models.ReservationRequest)
+
+
 func CreateMember(name string){
 	lib, err:= services.ReadLibraryFile()
 	if err != nil{
@@ -88,6 +91,7 @@ func BorrowBook(bookID int, memeberID int){
 		return
 	}
 
+	// Before a book can be borrowed, check if it is reserved
 	err = lib.BorrowBook(bookID, memeberID)
 
 	if err != nil{
@@ -137,4 +141,48 @@ func ListBorrowedBooks(memberID int)[]models.Book{
 		return nil
 	}
 	return lib.ListBorrowed(memberID)
+}
+
+func ReserveBook(bookID int, memberID int){
+
+	lib, err := services.ReadLibraryFile()
+    if err != nil {
+        fmt.Println("Error reading library data:", err)
+        return
+    }
+
+    // Check if book exists
+    book, bookExists := lib.Books[bookID]
+
+    if !bookExists  {
+        fmt.Println("Book not found.")
+        return
+    }
+
+    // Check if member exists
+	member, memberExists := lib.Members[memberID]
+    if !memberExists {
+        fmt.Println("Member not found.")
+        return
+    }
+
+	if book.Status == models.BookBorrowed{
+		fmt.Println("This book has been borrowed")
+		return
+	}
+
+
+	reservation := models.ReservationRequest{
+		BookID: bookID,
+		MemberID: memberID,
+	}
+
+	fmt.Printf("Adding reservation for (bookID %d - %s) by (memberID %d - %s) to the channel\n", bookID, book.Title, memberID, member.Name)
+
+	// Add reservation to the channel 
+	ReservationChannel <- reservation
+	fmt.Println("Reservation request added to the queue")
+	println("===========================================")
+
+
 }
