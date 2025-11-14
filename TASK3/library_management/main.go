@@ -2,19 +2,32 @@ package main
 
 import (
 
+	"example.com/library_management/concurrency"
 	"example.com/library_management/controllers"
-	//"example.com/library_management/models"
 
 	"flag"
 	"fmt"
 	"os"
+	"sync"
 )
 
 // Neeed use subCommands and Flags to stimulate console
 func main(){
 	
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+
+	go func(){
+		defer wg.Done()
+		concurrency.Worker()
+	}()
+	
+
+
 	createCmd := flag.NewFlagSet("create", flag.ExitOnError)
 	rmvCmd := flag.NewFlagSet("remove", flag.ExitOnError)
+	reserveCmd := flag.NewFlagSet("reserve",flag.ExitOnError)
 	borrowCmd := flag.NewFlagSet("borrow", flag.ExitOnError)
 	returnCmd := flag.NewFlagSet("return", flag.ExitOnError)
 	avaialbleCmd := flag.NewFlagSet("available-books", flag.ExitOnError)
@@ -31,6 +44,9 @@ func main(){
 	createCmd.StringVar(&author, "author", "", "Author of Book to create")
 
 	rmvCmd.IntVar(&bookID, "bookID", 0, "Book ID")
+
+	reserveCmd.IntVar(&bookID, "bookID", 0, "Book ID")
+	reserveCmd.IntVar(&memberID, "memberID", 0, "Member ID")
 
 	borrowCmd.IntVar(&bookID, "bookID", 0, "Book ID")
 	borrowCmd.IntVar(&memberID, "memberID", 0, "Member ID")
@@ -52,12 +68,11 @@ func main(){
 				controllers.CreateMember(name)
 				return
 			}
-			if title == "" || author == "" || name == ""{
+			if title == "" || author == ""{
 				fmt.Println("Please Provide a Title and an Author Name if creating a Book OR A name if creating a Member")
 				os.Exit(1)
 			} 
-			
-				controllers.CreateBook(title, author)
+			controllers.CreateBook(title, author)
 			
 		case "remove":
 			rmvCmd.Parse(os.Args[2:])
@@ -67,6 +82,21 @@ func main(){
 			}
 			controllers.DeleteBook(bookID)
 
+		case "reserve":
+			reserveCmd.Parse(os.Args[2:])
+
+			if bookID > 0 && memberID > 0{
+				controllers.ReserveBook(bookID, memberID)
+			}else{
+				for i := 1; i <= 5; i++ {
+			
+				bookID = 1
+				memberID = i + 1 
+
+				controllers.ReserveBook(bookID, memberID)
+			}
+
+			}
 		case "borrow":
 			borrowCmd.Parse(os.Args[2:])
 
