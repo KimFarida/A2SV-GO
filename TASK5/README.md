@@ -27,6 +27,7 @@ The objective of this task is to create a simple Task Management REST API using 
 ## Folder Structure:
 Follow the following folder structure for this task
 
+```
 task_manager/
 ├── main.go
 ├── controllers/
@@ -40,10 +41,11 @@ task_manager/
 ├── docs/
 │   └── api_documentation.md
 └── go.mod
+```
 
-`main.go`: Entry point of the application.
-`controllers/task_controller.go`: Handles incoming HTTP requests and invokes the appropriate service methods.
-`models/`: Defines the data structures used in the application.
-`data/task_service.go`: Contains business logic and data manipulation functions.
-`router/router.go`: Sets up the routes and initializes the Gin router and Defines the routing configuration for the API.
-`docs/api_documentation.md`: Contains API documentation and other related documentation.
+- `main.go`: Entry point of the application.
+- `controllers/task_controller.go`: Handles incoming HTTP requests and invokes the appropriate service methods.
+- `models/`: Defines the data structures used in the application.
+- `data/task_service.go`: Contains business logic and data manipulation functions.
+- `router/router.go`: Sets up the routes and initializes the Gin router and Defines the routing configuration for the API.
+- `docs/api_documentation.md`: Contains API documentation and other related documentation.
