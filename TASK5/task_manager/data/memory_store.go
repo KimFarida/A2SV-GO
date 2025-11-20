@@ -51,12 +51,26 @@ func (m *MemoryStore)List() ([]models.Task, error){
 // Update a specific task.
 func (m *MemoryStore)Update(id string, task models.Task) error{
 	//taskToUpdate
-
-	if _, ok := m.tasks[id]; !ok {
-		return fmt.Errorf("task not found")
+	existingTask, ok :=  m.tasks[id]
+	if !ok {
+		return errors.New("task not found")
+	}
+	
+	if task.Title != ""{
+		existingTask.Title = task.Title
+	} 
+	if task.Description != ""{
+		existingTask.Description = task.Description
 	}
 
-	m.tasks[id] = task
+	if models.IsValidStatus(task.Status){
+		existingTask.Status = task.Status
+	}
+	
+	if !task.DueDate.IsZero(){
+		existingTask.DueDate = task.DueDate
+	}
+	m.tasks[id] = existingTask
 	return nil
 } 
 
