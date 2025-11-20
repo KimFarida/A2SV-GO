@@ -1,8 +1,11 @@
 package services
-import 
-	(
-		"github.com/KimFarida/task_manager/models"
-	)
+
+import (
+	"errors"
+	"fmt"
+
+	"github.com/KimFarida/task_manager/models"
+)
 
 
 type MemoryStore struct {
@@ -19,25 +22,50 @@ func NewMemoryStore() *MemoryStore {
 // now implement the interface 
 // Create a new task.
 func (m *MemoryStore)Add(task models.Task) error{
+	m.tasks[task.ID] = task
 	return nil
 } 
 
 // Get the details of a specific task.
 func (m *MemoryStore)Get(id string) (models.Task, error){
-	return models.Task{}, nil
+	if task, ok := m.tasks[id]; ok{
+		return task, nil
+	}
+	return models.Task{}, errors.New("this task does not exist")
 } 
 
 // Get a list of all tasks.
-func (m *MemoryStore)List() (map[string]models.Task, error){
-	return m.tasks, nil
-} 
+func (m *MemoryStore)List() ([]models.Task, error){
+	if m.tasks == nil{
+		return make([]models.Task, 0), nil
+	}
+
+	allTasks := []models.Task{}
+	for _, task := range m.tasks{
+		allTasks = append(allTasks, task)
+	}
+
+	return allTasks, nil
+}
 
 // Update a specific task.
-func (m *MemoryStore)Update(id string, task models.Task) (models.Task, error){
-	return models.Task{}, nil
+func (m *MemoryStore)Update(id string, task models.Task) error{
+	//taskToUpdate
+
+	if _, ok := m.tasks[id]; !ok {
+		return fmt.Errorf("task not found")
+	}
+
+	m.tasks[id] = task
+	return nil
 } 
 
 //Delete a specific task.
 func (m *MemoryStore)Remove(id string) error {
+	if _, ok := m.tasks[id]; !ok {
+		return fmt.Errorf("task not found")
+	}
+
+	delete(m.tasks, id)
 	return nil
 }
